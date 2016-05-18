@@ -79,3 +79,6 @@
 [submodule "packages/org-focus"]
 	path = packages/org-focus
 	url = git@github.com:chrisdone/org-focus.git
+[submodule "packages/intero"]
+	path = packages/intero
+	url = git@github.com:chrisdone/intero.git
