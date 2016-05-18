@@ -271,6 +271,8 @@ import Data.Vector (Vector)
 
 ;; Keybindings
 
+(define-key intero-mode-map [f12] 'haskell-process-cabal-build-and-restart)
+
 (define-key highlight-uses-mode-map (kbd "C-t") 'highlight-uses-mode-replace)
 
 (define-key ghci-script-mode-map (kbd "C-`") 'haskell-interactive-bring)
