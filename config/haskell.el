@@ -490,15 +490,68 @@ import Data.Vector (Vector)
   (define-key interactive-haskell-mode-map (kbd "C-c c") 'haskell-process-stack))
 (setq flycheck-check-syntax-automatically '(save idle-change new-line mode-enabled))
 
+(defun haskell-capitalize-module (m)
+  ;; FIXME:
+  (with-temp-buffer
+    (insert m)
+    (upcase-initials-region (point-min) (point-max))
+    (buffer-string)))
 
+(defvar haskell-fast-module-list
+  (list)
+  "A list of modules.")
 
-(defun stack-mode-save-flycheck ()
-  "Save the buffer and flycheck it."
+(defun haskell-fast-modules-save ()
   (interactive)
-  (save-buffer)
-  (flycheck-buffer))
+  (with-current-buffer (find-file-noselect "~/.emacs.d/.haskell-modules.el")
+    (erase-buffer)
+    (insert (format "%S" haskell-fast-module-list))
+    (basic-save-buffer)
+    (bury-buffer)))
 
-(setq flycheck-check-syntax-automatically nil)
+(defun haskell-fast-modules-load ()
+  (interactive)
+  (with-current-buffer (find-file-noselect "~/.emacs.d/.haskell-modules.el")
+    (setq haskell-fast-module-list (read (buffer-string)))
+    (bury-buffer)))
+
+(defun haskell-fast-get-import (custom)
+  (if custom
+      (let* ((module (haskell-capitalize-module (read-from-minibuffer "Module: " ""))))
+        (unless (member module haskell-fast-module-list)
+          (add-to-list 'haskell-fast-module-list module))
+        module)
+    (let ((module (haskell-capitalize-module
+                   (haskell-complete-module-read
+                    "Module: "
+                    (append (mapcar #'car haskell-import-mapping)
+                            haskell-fast-module-list)))))
+      (unless (member module haskell-fast-module-list)
+        (add-to-list 'haskell-fast-module-list module)
+        (haskell-fast-modules-save))
+      module)))
+
+(defun haskell-fast-add-import (custom)
+  "Add an import to the import list.  Sorts and aligns imports,
+unless `haskell-stylish-on-save' is set, in which case we defer
+to stylish-haskell."
+  (interactive "P")
+  (save-excursion
+    (goto-char (point-max))
+    (haskell-navigate-imports)
+    (let* ((chosen (haskell-fast-get-import custom))
+           (module (let ((mapping (assoc chosen haskell-import-mapping)))
+                     (if mapping
+                         (cdr mapping)
+                       (concat "import " chosen "\n")))))
+      (insert module))
+    (haskell-sort-imports)
+    (haskell-align-imports)))
+
+(define-key haskell-mode-map (kbd "C-i") 'haskell-fast-add-import)
+(define-key shm-map (kbd "C-i") 'haskell-fast-add-import)
+(define-key shm-map (kbd "<tab>") 'shm/tab)
+
 (setq haskell-process-type 'ghci)
 (setq haskell-process-path-ghci "stack")
 (setq haskell-process-use-ghci t)
