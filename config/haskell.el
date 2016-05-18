@@ -226,7 +226,12 @@ import Data.Text (Text)
         ("Data.ByteString" . "import qualified Data.ByteString as S
 import Data.ByteString (ByteString)
 ")
+        ("Data.ByteString.Char8" . "import qualified Data.ByteString.Char8 as S8
+import Data.ByteString (ByteString)
+")
         ("Data.ByteString.Lazy" . "import qualified Data.ByteString.Lazy as L
+")
+        ("Data.ByteString.Lazy.Char8" . "import qualified Data.ByteString.Lazy.Char8 as L8
 ")
         ("Data.Map" . "import qualified Data.Map.Strict as M
 import Data.Map.Strict (Map)
@@ -239,6 +244,13 @@ import Data.Set (Set)
 ")
         ("Data.Vector" . "import qualified Data.Vector as V
 import Data.Vector (Vector)
+")
+        ("Data.Vector.Storable" . "import qualified Data.Vector.Storable as SV
+import Data.Vector (Vector)
+")
+        ("Data.Conduit.List" . "import qualified Data.Conduit.List as CL
+")
+        ("Data.Conduit.Binary" . "import qualified Data.Conduit.Binary as CB
 ")))
 
 (setq haskell-language-extensions '())
