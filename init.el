@@ -105,5 +105,5 @@
 (sunburn)
 (god-mode)
 (goto-last-point-mode)
-(turn-on-haskell-simple-indent)
+;(turn-on-haskell-simple-indent)
 (load "haskell-mode-autoloads.el")
