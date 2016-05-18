@@ -90,6 +90,10 @@
 (require 'w3m-haddock)
 (require 'magit-blame)
 (require 'intero)
+(require 'haskell-mode)
+(require 'haskell-interactive-mode)
+(require 'haskell)
+(require 'haskell-simple-indent)
 
 
 ;; Emacs configurations
@@ -106,5 +110,4 @@
 (sunburn)
 (god-mode)
 (goto-last-point-mode)
-;(turn-on-haskell-simple-indent)
-(load "haskell-mode-autoloads.el")
+(turn-on-haskell-simple-indent)
