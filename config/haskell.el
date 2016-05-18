@@ -7,6 +7,7 @@
 ;(require 'haskell-simple-indent)
 (require 'haskell-interactive-mode)
 (require 'haskell)
+(require 'intero)
 (require 'haskell-font-lock)
 (require 'haskell-debug)
 (require 'sgml-mode)
@@ -259,11 +260,13 @@ import Data.Vector (Vector)
 ;; Add hook
 
 (add-hook 'haskell-mode-hook 'structured-haskell-mode)
-(add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+(remove-hook 'haskell-mode-hook 'interactive-haskell-mode)
 (remove-hook 'haskell-mode-hook 'stack-mode)
 (add-hook 'haskell-interactive-mode-hook 'structured-haskell-repl-mode)
 (add-hook 'haskell-mode-hook 'haskell-auto-insert-module-template)
 (add-hook 'w3m-display-hook 'w3m-haddock-display)
+
+(add-hook 'haskell-mode-hook 'intero-mode)
 
 
 ;; Keybindings
@@ -485,6 +488,7 @@ import Data.Vector (Vector)
   (interactive)
   (define-key interactive-haskell-mode-map (kbd "C-c C-c") 'haskell-process-stack-build)
   (define-key interactive-haskell-mode-map (kbd "C-c c") 'haskell-process-stack))
+(setq flycheck-check-syntax-automatically '(save idle-change new-line mode-enabled))
 
 
 
@@ -495,3 +499,7 @@ import Data.Vector (Vector)
   (flycheck-buffer))
 
 (setq flycheck-check-syntax-automatically nil)
+(setq haskell-process-type 'ghci)
+(setq haskell-process-path-ghci "stack")
+(setq haskell-process-use-ghci t)
+(setq haskell-process-args-ghci '("ghci" "--with-ghc" "intero" "--no-load" "--no-build"))
