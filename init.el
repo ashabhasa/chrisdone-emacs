@@ -37,7 +37,6 @@
     flycheck
     json-reformat
     restclient
-    intero
     yaml-mode)
   "Packages whose location follows the
   packages/package-name/package-name.el format.")
@@ -46,7 +45,8 @@
   '("structured-haskell-mode/elisp"
     "hindent/elisp"
     "git-modes"
-    "company-mode")
+    "company-mode"
+    "intero/elisp")
   "Custom load paths that don't follow the normal
   package-name/module-name.el format.")
 
@@ -89,6 +89,7 @@
 (require 'company)
 (require 'w3m-haddock)
 (require 'magit-blame)
+(require 'intero)
 
 
 ;; Emacs configurations
