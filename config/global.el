@@ -613,4 +613,16 @@ prefix argument."
            (haskell-process-type . cabal-repl)
            (shm-lambda-indent-style . leftmost-parent)))))
 
+(defmacro measure-time (body)
+  "Measure the time it takes to evaluate BODY."
+  (let ((sym (gensym "time"))
+        (result (gensym "result")))
+    `(let ((,sym (current-time))
+           (,result ,body))
+       (message "%s: %.0fms"
+                ,(let ((string (format "%-50s" (format "%S" body))))
+                   (substring string 0 (min (length string) 50)))
+                (* 1000 (float-time (time-since ,sym))))
+       ,result)))
+
 (provide 'global)
