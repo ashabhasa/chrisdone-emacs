@@ -50,7 +50,7 @@ if the symbol is -foo, then expand to module-name-foo."
             (file-name-nondirectory (buffer-file-name)))))
       (insert (format ";;; %s.el --- $DESC$
 
-;; Copyright (c) 2014 Chris Done. All rights reserved.
+;; Copyright (c) 2016 Chris Done. All rights reserved.
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
