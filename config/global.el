@@ -504,6 +504,16 @@ prefix argument."
                                  (50 . zenburn-yellow)
                                  (51 . zenburn-green))))
 
+ (setq org-todo-keywords
+       '((sequence
+          "TODO(t)"
+          "STARTED(s)"
+          "BLOCKED(w@/!)"
+          "|"
+          "DONE(d!)"
+          "CANCELED(c@)"
+          "DEFERRED(c@)")))
+
 (setq org-priority-faces (quote ((49 . sunburn-red)
                                  (50 . sunburn-yellow)
                                  (51 . sunburn-green))))
