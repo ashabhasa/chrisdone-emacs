@@ -432,6 +432,12 @@ prefix argument."
 (define-key sgml-mode-map (kbd "/") nil)
 (define-key c-mode-map (kbd "/") nil)
 
+(define-key messages-buffer-mode-map (kbd "C-c C-k") 'messages-erase-buffer)
+(defun messages-erase-buffer ()
+  (interactive)
+  (let ((inhibit-read-only t))
+    (erase-buffer)))
+
 (define-key ag-mode-map (kbd "p") 'previous-error-no-select)
 (define-key ag-mode-map (kbd "n") 'next-error-no-select)
 
