@@ -411,7 +411,8 @@ prefix argument."
 (global-set-key [f3] 'resmacro-start-macro)
 (global-set-key (kbd "C-x (") 'resmacro-start-macro)
 
-(global-set-key (kbd "C-x C-a") 'org-agenda-list)
+(global-set-key (kbd "C-x C-a") 'org-focus)
+(global-set-key (kbd "C-x C-c") 'org-focus)
 
 ;; Convenience bindings for god-mode
 
