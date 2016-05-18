@@ -31,6 +31,7 @@
     number
     hide-region
     ats-mode
+    org-focus
     multiple-cursors
     projects-mode
     resmacro
