@@ -346,6 +346,12 @@ prefix argument."
     (erase-buffer)
     (ielm-return)))
 
+(defun replace-string-or-query-replace (n)
+  (interactive "P")
+  (if n
+      (call-interactively 'query-replace)
+    (call-interactively 'replace-string)))
+
 
 ;; Global keybindings
 
@@ -377,7 +383,7 @@ prefix argument."
 (global-set-key (kbd "M-g") 'goto-line)
 (global-set-key (kbd "C-x C-x") 'goto-last-change)
 (global-set-key (kbd "C-x C-TAB") 'indent-rigidly)
-(global-set-key (kbd "C-t") 'replace-regexp)
+(global-set-key (kbd "C-t") 'replace-string-or-query-replace)
 (global-set-key (kbd "C-c i") 'indent-buffer)
 (global-set-key (kbd "C-x l") 'select-current-line)
 (global-set-key (kbd "M-a") 'backward-up-list)
