@@ -567,9 +567,6 @@ prefix argument."
 
 ;; Faces
 
-(custom-set-faces
- '(default ((t (:inherit nil :height 140 :width normal :family "Ubuntu Mono")))))
-
 (defface esk-paren-face
   '((((class color) (background dark))
      (:foreground "grey50"))
