@@ -304,7 +304,6 @@ import Data.Vector (Vector)
 
 (define-key haskell-mode-map (kbd "C-c i") 'hindent/reformat-decl)
 (define-key haskell-mode-map (kbd "C-c C-d") 'haskell-w3m-open-haddock)
-(define-key haskell-mode-map (kbd "-") 'smart-hyphen)
 (define-key haskell-mode-map [f8] 'haskell-navigate-imports)
 (define-key haskell-mode-map (kbd "C-c C-u") 'haskell-insert-undefined)
 (define-key haskell-mode-map (kbd "C-c C-a") 'haskell-insert-doc)
