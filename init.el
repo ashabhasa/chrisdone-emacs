@@ -90,6 +90,7 @@
 (require 'w3m-haddock)
 (require 'magit-blame)
 (require 'intero)
+(require 'intero-devel)
 (require 'haskell-mode)
 (require 'haskell-interactive-mode)
 (require 'haskell)
