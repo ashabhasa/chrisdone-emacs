@@ -386,8 +386,8 @@ import Data.Vector (Vector)
   (interactive)
   (setq haskell-process-suggest-remove-import-lines (not haskell-process-suggest-remove-import-lines))
   (message "Import suggestions are now %s." (if haskell-process-suggest-remove-import-lines
-                                               "enabled"
-                                             "disabled")))
+                                                "enabled"
+                                              "disabled")))
 
 (defvar haskell-stack-commands
   '("build"
