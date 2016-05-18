@@ -484,12 +484,12 @@ import Data.Vector (Vector)
                                ('cabal-ghci haskell-process-path-cabal))
                    :app-icon haskell-process-logo)))))))))))
 
-(defun haskell-setup-stack-commands ()
-  "Setup stack keybindings."
-  (interactive)
-  (define-key interactive-haskell-mode-map (kbd "C-c C-c") 'haskell-process-stack-build)
-  (define-key interactive-haskell-mode-map (kbd "C-c c") 'haskell-process-stack))
+(define-key interactive-haskell-mode-map (kbd "C-c C-c") 'haskell-process-stack-build)
+(define-key interactive-haskell-mode-map (kbd "C-c c") 'haskell-process-stack)
+
 (setq flycheck-check-syntax-automatically '(save idle-change new-line mode-enabled))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun haskell-capitalize-module (m)
   ;; FIXME:
