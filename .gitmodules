@@ -1,39 +1,39 @@
 [submodule "packages/zenburn"]
 	path = packages/zenburn
-	url = https://github.com/chrisdone/zenburn.git
+	url = git@github.com:chrisdone/zenburn.git
 [submodule "packages/magit"]
 	path = packages/magit
-	url = https://github.com/chrisdone/magit.git
+	url = git@github.com:chrisdone/magit.git
 [submodule "packages/smex"]
 	path = packages/smex
-	url = https://github.com/nonsequitur/smex.git
+	url = git@github.com:nonsequitur/smex.git
 [submodule "packages/haskell-mode"]
 	path = packages/haskell-mode
-	url = git@github.com:haskell/haskell-mode.git
+	url = git@github.com:chrisdone/haskell-mode.git
 [submodule "packages/paredit"]
 	path = packages/paredit
-	url = https://github.com/emacsmirror/paredit.git
+	url = git@github.com:emacsmirror/paredit.git
 [submodule "packages/god-mode"]
 	path = packages/god-mode
-	url = https://github.com/chrisdone/god-mode.git
+	url = git@github.com:chrisdone/god-mode.git
 [submodule "packages/structured-haskell-mode"]
 	path = packages/structured-haskell-mode
-	url = https://github.com/chrisdone/structured-haskell-mode.git
+	url = git@github.com:chrisdone/structured-haskell-mode.git
 [submodule "packages/markdown-mode"]
 	path = packages/markdown-mode
-	url = https://github.com/defunkt/markdown-mode.git
+	url = git@github.com:defunkt/markdown-mode.git
 [submodule "packages/dash"]
 	path = packages/dash
-	url = https://github.com/magnars/dash.el.git
+	url = git@github.com:magnars/dash.el.git
 [submodule "packages/elisp-slime-nav"]
 	path = packages/elisp-slime-nav
-	url = https://github.com/purcell/elisp-slime-nav.git
+	url = git@github.com:purcell/elisp-slime-nav.git
 [submodule "packages/ag"]
 	path = packages/ag
-	url = https://github.com/Wilfred/ag.el.git
+	url = git@github.com:Wilfred/ag.el.git
 [submodule "packages/w3m"]
 	path = packages/w3m
-	url = https://github.com/emacsmirror/w3m.git
+	url = git@github.com:emacsmirror/w3m.git
 [submodule "packages/hamlet-mode"]
 	path = packages/hamlet-mode
 	url = http://github.com/chrisdone/hamlet-mode.git
@@ -42,34 +42,40 @@
 	url = http://github.com/magnars/s.el.git
 [submodule "packages/hindent"]
 	path = packages/hindent
-	url = http://github.com/chrisdone/hindent.git
+	url = git@github.com:chrisdone/hindent.git
 [submodule "packages/multiple-cursors"]
 	path = packages/multiple-cursors
-	url = https://github.com/magnars/multiple-cursors.el.git
+	url = git@github.com:magnars/multiple-cursors.el.git
 [submodule "packages/ace-jump-mode"]
 	path = packages/ace-jump-mode
-	url = https://github.com/chrisdone/ace-jump-mode.git
+	url = git@github.com:chrisdone/ace-jump-mode.git
 [submodule "packages/flycheck"]
 	path = packages/flycheck
-	url = https://github.com/flycheck/flycheck.git
+	url = git@github.com:flycheck/flycheck.git
 [submodule "packages/number"]
 	path = packages/number
-	url = https://github.com/chrisdone/number.git
+	url = git@github.com:chrisdone/number.git
 [submodule "packages/git-modes"]
 	path = packages/git-modes
-	url = https://github.com/magit/git-modes.git
+	url = git@github.com:magit/git-modes.git
 [submodule "packages/restclient"]
 	path = packages/restclient
-	url = https://github.com/pashky/restclient.el.git
+	url = git@github.com:pashky/restclient.el.git
 [submodule "packages/packages/json-reformat"]
 	path = packages/packages/json-reformat
-	url = https://github.com/gongo/json-reformat.git
+	url = git@github.com:gongo/json-reformat.git
 [submodule "packages/json-reformat"]
 	path = packages/json-reformat
-	url = https://github.com/gongo/json-reformat.git
+	url = git@github.com:gongo/json-reformat.git
 [submodule "packages/yaml-mode"]
 	path = packages/yaml-mode
 	url = git@github.com:yoshiki/yaml-mode.git
 [submodule "packages/ide-backend-mode"]
 	path = packages/ide-backend-mode
 	url = git@github.com:chrisdone/ide-backend-mode.git
+[submodule "packages/company-mode"]
+	path = packages/company-mode
+	url = git@github.com:company-mode/company-mode.git
+[submodule "packages/org-focus"]
+	path = packages/org-focus
+	url = git@github.com:chrisdone/org-focus.git
