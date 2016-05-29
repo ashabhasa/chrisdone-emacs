@@ -559,4 +559,3 @@ to stylish-haskell."
 (setq haskell-process-args-ghci '("ghci" "--with-ghc" "intero" "--no-load" "--no-build"))
 
 (define-key intero-mode-map [f12] 'intero-devel-reload)
-(define-key intero-mode-map (kbd "C-c C-l") 'flycheck-buffer)
