@@ -66,18 +66,7 @@
 (defun haskell-process-cabal-build-and-restart ()
   "Build and restart the Cabal project."
   (interactive)
-  (cond
-   (haskell-process-use-ghci
-    (when (buffer-file-name)
-      (save-buffer))
-    ;; Reload main module where `main' function is
-    (haskell-process-reload-devel-main))
-   (t
-    (haskell-process-cabal-build)
-    (haskell-process-queue-without-filters
-     (haskell-process)
-     (format ":!cd %s && scripts/restart\n" (haskell-session-cabal-dir (haskell-session)))))
-   (t (turbo-devel-reload))))
+  (intero-devel-reload))
 
 (defun haskell-who-calls (&optional prompt)
   "Grep the codebase to see who uses the symbol at point."
