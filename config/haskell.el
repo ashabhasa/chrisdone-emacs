@@ -260,7 +260,7 @@ import Data.Vector (Vector)
 
 ;; Keybindings
 
-(define-key intero-mode-map [f12] 'haskell-process-cabal-build-and-restart)
+(define-key intero-mode-map (kbd "C-`") 'flycheck-list-errors)
 
 (define-key highlight-uses-mode-map (kbd "C-t") 'highlight-uses-mode-replace)
 
@@ -548,3 +548,5 @@ to stylish-haskell."
 (setq haskell-process-args-ghci '("ghci" "--with-ghc" "intero" "--no-load" "--no-build"))
 
 (define-key intero-mode-map [f12] 'intero-devel-reload)
+
+(setq hindent-style "johan-tibell")
