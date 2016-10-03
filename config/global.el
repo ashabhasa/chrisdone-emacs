@@ -119,6 +119,16 @@ prompted regexp with the prompted text."
   (defvar backup-dir (concat "/tmp/emacs_backups/" (user-login-name) "/"))
   (setq backup-directory-alist (list (cons "." backup-dir))))
 
+;; Use convert -delay 35 -colorspace rgb -colorspace srgb -quantize lab -fuzz 3%  -layers optimize *.png out.gif
+;; how to get window id:
+(defun snap! ()
+  (interactive)
+  (let ((name (format-time-string "%Y-%m-%d-%H-%M-%S-%3N")))
+    (redisplay t)
+    (shell-command-to-string
+     (format "screencapture -l0x85FC -o /Users/chris/Emacs/packages/intero/tmp/%s.png" name))))
+(global-set-key [f9] 'snap!)
+
 (defun auto-chmod ()
   "If we're in a script buffer, then chmod +x that script."
   (and (save-excursion
@@ -369,9 +379,8 @@ prefix argument."
 (global-set-key (kbd "C-c C-=") 'number/eval)
 (global-set-key (kbd "C-c C-:") 'eval-replacing-region)
 
-(global-set-key (kbd "s-s") 'save-window-config)
-(global-set-key (kbd "s-g") 'exit-recursive-edit)
-(global-set-key (kbd "s-u") 'winner-mode-undo)
+(global-set-key (kbd "s-w") 'window-configuration-to-register)
+(global-set-key (kbd "s-j") 'jump-to-register)
 
 (global-set-key (kbd "C-x C-k C-o") 'delete-blank-lines-in)
 
@@ -624,5 +633,7 @@ prefix argument."
                    (substring string 0 (min (length string) 50)))
                 (* 1000 (float-time (time-since ,sym))))
        ,result)))
+
+(setq flycheck-check-syntax-automatically '(save idle-change new-line mode-enabled))
 
 (provide 'global)
