@@ -107,8 +107,6 @@
                              (hours (plist-get clock :hours))
                              (key (concat (format-time-string "%Y-%m-%d" date)
                                           "\t"
-                                          "Chris Done"
-                                          "\t"
                                           (plist-get item :title))))
                         (when (and (> hours 0.0)
                                    (org-focus-day< start-date date))
@@ -127,7 +125,13 @@
         (let ((inhibit-read-only t))
           (erase-buffer)
           (maphash (lambda (key hours)
-                     (insert (format "%s\t%.2f\n" key hours)))
+                     (let* ((parts (split-string key "\t"))
+                            (date (nth 0 parts))
+                            (title (nth 1 parts)))
+                       (insert (format "%s\t%.1f\t\t%s\n"
+                                       (replace-regexp-in-string "[0-9]+-[0-9]+-" "" date)
+                                       hours
+                                       title))))
                    histogram)
           (sort-lines nil
                       (point-min)
