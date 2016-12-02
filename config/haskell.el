@@ -255,7 +255,7 @@ import Data.Vector (Vector)
 (add-hook 'haskell-mode-hook 'haskell-auto-insert-module-template)
 (add-hook 'w3m-display-hook 'w3m-haddock-display)
 
-(add-hook 'haskell-mode-hook 'intero-mode)
+(add-hook 'haskell-mode-hook 'intero-mode-blacklist)
 
 
 ;; Keybindings
@@ -509,7 +509,8 @@ import Data.Vector (Vector)
   (if custom
       (let* ((module (haskell-capitalize-module (read-from-minibuffer "Module: " ""))))
         (unless (member module haskell-fast-module-list)
-          (add-to-list 'haskell-fast-module-list module))
+          (add-to-list 'haskell-fast-module-list module)
+          (haskell-fast-modules-save))
         module)
     (let ((module (haskell-capitalize-module
                    (haskell-complete-module-read
@@ -550,3 +551,7 @@ to stylish-haskell."
 (define-key intero-mode-map [f12] 'intero-devel-reload)
 
 (setq hindent-style "johan-tibell")
+
+(define-key haskell-mode-map [f6] (lambda () (interactive) (compile "stack test")))
+
+(haskell-fast-modules-load)

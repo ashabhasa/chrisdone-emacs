@@ -82,3 +82,9 @@
 [submodule "packages/intero"]
 	path = packages/intero
 	url = git@github.com:chrisdone/intero.git
+[submodule "packages/websocket"]
+	path = packages/websocket
+	url = git@github.com:ahyatt/emacs-websocket.git
+[submodule "packages/web-server"]
+	path = packages/web-server
+	url = git@github.com:eschulte/emacs-web-server.git

@@ -37,7 +37,9 @@
     flycheck
     json-reformat
     restclient
-    yaml-mode)
+    yaml-mode
+    purescript-mode
+    websocket)
   "Packages whose location follows the
   packages/package-name/package-name.el format.")
 
