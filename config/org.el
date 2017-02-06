@@ -153,3 +153,52 @@
                     "")
                   "\n")))
       (switch-to-buffer-other-window buffer))))
+
+(defun org-focus-toggl ()
+  "Generate an import file for toggl."
+  (interactive)
+  (let* ((contract-start (org-focus-contract-start))
+         (start-date
+          (org-focus-parse-time
+           (read-from-minibuffer
+            "Since date: "
+            (if contract-start
+                (format-time-string "%Y-%m-%d" contract-start)
+              (format-time-string "%Y-%m-01")))))
+         (items (org-focus-buffer-items))
+         (client (read-from-minibuffer "Client: "))
+         (project (read-from-minibuffer "Project: "))
+         (buffer
+          (get-buffer-create
+           (format "*Toggle from %s*"
+                   (format-time-string "%Y-%m-%d" start-date)))))
+    (with-current-buffer buffer
+      (let ((inhibit-read-only t)
+            (lasthash nil))
+        (erase-buffer)
+        (mapc
+         (lambda (item)
+           (mapc
+            (lambda (clock)
+              (let* ((hash (make-hash-table)))
+                (when (and (> (plist-get clock :hours) 0.0)
+                           (org-focus-day< start-date (plist-get clock :date)))
+                  (puthash "Email" "chrisdone@fpcomplete.com" hash)
+                  (puthash "Client" client hash)
+                  (puthash "Description" (plist-get item :title) hash)
+                  (puthash "Start date" (format-time-string "%F" (plist-get clock :date)) hash)
+                  (puthash "Start time" (format-time-string "%T" (plist-get clock :date)) hash)
+                  (puthash "Duration" (concat (plist-get clock :hours-stamp) ":00") hash)
+                  (puthash "Billable" "Y" hash)
+                  (mapc (lambda (key)
+                          (insert (gethash key hash) "\t"))
+                        (hash-table-keys hash))
+                  (insert "\n")
+                  (setq lasthash hash))))
+            (plist-get item :clocks)))
+         items)
+        (goto-char (point-min))
+        (insert (mapconcat #'identity (hash-table-keys lasthash) "\t")
+                "\n")))
+    (switch-to-buffer-other-window buffer)
+    ))
