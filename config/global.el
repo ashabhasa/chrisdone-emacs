@@ -365,6 +365,18 @@ prefix argument."
 
 ;; Global keybindings
 
+(global-set-key (kbd "s-r") 'window-configuration-to-register)
+(global-set-key (kbd "s-1") (lambda () (interactive) (jump-to-register ?1)))
+(global-set-key (kbd "s-2") (lambda () (interactive) (jump-to-register ?2)))
+(global-set-key (kbd "s-3") (lambda () (interactive) (jump-to-register ?3)))
+(global-set-key (kbd "s-4") (lambda () (interactive) (jump-to-register ?4)))
+(global-set-key (kbd "s-5") (lambda () (interactive) (jump-to-register ?5)))
+(global-set-key (kbd "s-6") (lambda () (interactive) (jump-to-register ?6)))
+(global-set-key (kbd "s-7") (lambda () (interactive) (jump-to-register ?7)))
+(global-set-key (kbd "s-8") (lambda () (interactive) (jump-to-register ?8)))
+(global-set-key (kbd "s-9") (lambda () (interactive) (jump-to-register ?9)))
+(global-set-key (kbd "s-0") (lambda () (interactive) (jump-to-register ?0)))
+
 (global-set-key [remap paredit-kill] (bol-with-prefix paredit-kill))
 (global-set-key [remap org-kill-line] (bol-with-prefix org-kill-line))
 (global-set-key [remap kill-line] (bol-with-prefix kill-line))
