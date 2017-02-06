@@ -19,3 +19,9 @@
 
 (define-key markdown-mode-map (kbd "C-c C-f") 'markdown-code-fence)
 (define-key markdown-mode-map (kbd "M-;") 'markdown-blockquote-region)
+
+(define-key markdown-mode-map [f5] 'markdown-gist-refresh)
+(defun markdown-gist-refresh ()
+  (interactive)
+  (when (not (string= "" (shell-command-to-string "git remote -v | grep ^origin | grep '(push)' | grep blah")))
+    (message "OK, go!")))
