@@ -202,3 +202,33 @@
                 "\n")))
     (switch-to-buffer-other-window buffer)
     ))
+
+
+(define-key org-focus-mode-map (kbd "t") 'org-focus-toggl)
+(defvar org-focus-toggl-regex
+  "[ ]+\\([^ ]+\\)[ ]+\\([0-9.]+\\)[ ]+/[ ]+[0-9.]+[ ]+[A-Z]+[ ]+\\(.+\\)")
+(defvar org-focus-projects
+  '())
+(defun org-focus-toggl ()
+  (interactive)
+  (let ((this-time (get-text-property (point) 'time)))
+    (when this-time
+      (forward-line 1)
+      (goto-char (line-beginning-position))
+      (while (looking-at org-focus-toggl-regex)
+        (let* ((fname (match-string-no-properties 1))
+               (hours (match-string-no-properties 2))
+               (description (match-string-no-properties 3))
+               (pid (cdr (assoc fname org-focus-projects))))
+          (toggl-submit
+           pid
+           (org-focus-trim-string description)
+           this-time
+           (* (string-to-number hours) 60 60))
+          (sit-for 1.5))
+        (forward-line 1))
+      (message "Clocks toggl'd!"))))
+(defun org-focus-trim-string (string)
+  "Remove white spaces in beginning and ending of STRING.
+White space here is any of: space, tab, emacs newline (line feed, ASCII 10)."
+  (replace-regexp-in-string "\\`[ \t\n]*" "" (replace-regexp-in-string "[ \t\n]*\\'" "" string)))
