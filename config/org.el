@@ -84,6 +84,18 @@
     (when (search-forward-regexp "#\\+CONTRACT_HOURS: \\([0-9]+\\)$" nil t 1)
       (string-to-number (match-string 1)))))
 
+(defun org-toggl-client-id ()
+  (save-excursion
+    (goto-char (point-min))
+    (when (search-forward-regexp "#\\+TOGGL_CLIENT_ID: \\([0-9]+\\)$" nil t 1)
+      (string-to-number (match-string 1)))))
+
+(defun org-toggl-project-id ()
+  (save-excursion
+    (goto-char (point-min))
+    (when (search-forward-regexp "#\\+TOGGL_PROJECT_ID: \\([0-9]+\\)$" nil t 1)
+      (string-to-number (match-string 1)))))
+
 (defun org-focus-timesheet ()
   "Generate a work timesheet since DATE."
   (interactive)
@@ -206,7 +218,7 @@
 
 (define-key org-focus-mode-map (kbd "t") 'org-focus-toggl)
 (defvar org-focus-toggl-regex
-  "[ ]+\\([^ ]+\\)[ ]+\\([0-9.]+\\)[ ]+/[ ]+[0-9.]+[ ]+[A-Z]+[ ]+\\(.+\\)")
+  "[ ]+\\([^ ]+\\)[ ]+\\([0-9]+:[0-9]+\\)[ ]+/[ ]+[0-9:]+[ ]+[A-Z]+[ ]+\\(.+\\)")
 (defvar org-focus-projects
   '())
 (defun org-focus-toggl ()
@@ -224,10 +236,10 @@
            pid
            (org-focus-trim-string description)
            this-time
-           (* (string-to-number hours) 60 60))
-          (sit-for 1.5))
-        (forward-line 1))
-      (message "Clocks toggl'd!"))))
+           (* (org-focus-parse-hours hours) 60 60))
+          (sit-for 1.5)
+          (forward-line 1)))
+      (message "Clocks toggl'd!")))))
 (defun org-focus-trim-string (string)
   "Remove white spaces in beginning and ending of STRING.
 White space here is any of: space, tab, emacs newline (line feed, ASCII 10)."
