@@ -554,4 +554,9 @@ to stylish-haskell."
 
 (define-key haskell-mode-map [f6] (lambda () (interactive) (compile "stack test")))
 
+(define-key haskell-mode-map [f5]
+  (lambda ()
+    (interactive)
+    (compile (format "cd %s && sh build.sh" (intero-project-root)))))
+
 (haskell-fast-modules-load)
