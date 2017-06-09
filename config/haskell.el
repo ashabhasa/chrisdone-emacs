@@ -597,3 +597,9 @@ to stylish-haskell."
                (insert msg)
                (goto-char (point-min))))))))))
 (remove-hook 'flycheck-after-syntax-check-hook 'intero-watch-expression-hook)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+(define-key intero-mode-map (kbd "C-?") 'intero-uses-at)
