@@ -88,3 +88,6 @@
 [submodule "packages/web-server"]
 	path = packages/web-server
 	url = git@github.com:eschulte/emacs-web-server.git
+[submodule "packages/psc-ide-emacs"]
+	path = packages/psc-ide-emacs
+	url = git@github.com:epost/psc-ide-emacs.git

@@ -221,9 +221,10 @@
   "[ ]+\\([^ ]+\\)[ ]+\\([0-9]+:[0-9]+\\)[ ]+/[ ]+[0-9:]+[ ]+[A-Z]+[ ]+\\(.+\\)")
 (defvar org-focus-projects
   '())
-(defun org-focus-toggl ()
-  (interactive)
-  (let ((this-time (get-text-property (point) 'time)))
+(defun org-focus-toggl (dry-run)
+  (interactive "P")
+  (let ((this-time (get-text-property (point) 'time))
+        (total-hours 0))
     (when this-time
       (forward-line 1)
       (goto-char (line-beginning-position))
@@ -232,15 +233,43 @@
                (hours (match-string-no-properties 2))
                (description (match-string-no-properties 3))
                (pid (cdr (assoc fname org-focus-projects))))
-          (toggl-submit
-           pid
-           (org-focus-trim-string description)
-           this-time
-           (* (org-focus-parse-hours hours) 60 60))
-          (sit-for 1.5)
+          (setq total-hours
+                (+ total-hours
+                   (org-focus-roundup-half-hours (org-focus-parse-hours hours))))
+          (if (not dry-run)
+              (progn (toggl-submit
+                      pid
+                      (org-focus-trim-string description)
+                      this-time
+                      (* (org-focus-roundup-half-hours (org-focus-parse-hours hours)) 60 60))
+                     (sit-for 1.5))
+            (message
+             "Clocking: %s => %f hours (%s)"
+             (org-focus-trim-string description)
+             (org-focus-roundup-half-hours (org-focus-parse-hours hours))
+             (org-focus-format-hours (org-focus-roundup-half-hours (org-focus-parse-hours hours)))))
+          ;;
           (forward-line 1)))
-      (message "Clocks toggl'd!")))))
+      (message "%s hours toggl'd!" (org-focus-format-hours total-hours)))))
 (defun org-focus-trim-string (string)
   "Remove white spaces in beginning and ending of STRING.
 White space here is any of: space, tab, emacs newline (line feed, ASCII 10)."
   (replace-regexp-in-string "\\`[ \t\n]*" "" (replace-regexp-in-string "[ \t\n]*\\'" "" string)))
+
+(defun org-focus-roundup-half-hours (h)
+  "Tracked time is rounded up to the nearest 15 minutes.
+After 40 minutes, rounded up to the nearest hour.
+Allowed minutes: 0 15 30 60
+"
+  (let* ((mins (- h (floor h))))
+    (if (= 0 mins)
+        h
+      (if (> mins 0.25)
+          (if (> mins 0.5)
+              (if (> mins 0.6)
+                  (+ 1 (floor h))
+                (if (> mins 0.75)
+                    (+ 1 (floor h))
+                  (+ 0.75 (floor h))))
+            (+ 0.5 (floor h)))
+        (+ 0.25 (floor h))))))

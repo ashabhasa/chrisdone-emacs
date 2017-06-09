@@ -365,17 +365,34 @@ prefix argument."
 
 ;; Global keybindings
 
-(global-set-key (kbd "s-r") 'window-configuration-to-register)
-(global-set-key (kbd "s-1") (lambda () (interactive) (jump-to-register ?1)))
-(global-set-key (kbd "s-2") (lambda () (interactive) (jump-to-register ?2)))
-(global-set-key (kbd "s-3") (lambda () (interactive) (jump-to-register ?3)))
-(global-set-key (kbd "s-4") (lambda () (interactive) (jump-to-register ?4)))
-(global-set-key (kbd "s-5") (lambda () (interactive) (jump-to-register ?5)))
-(global-set-key (kbd "s-6") (lambda () (interactive) (jump-to-register ?6)))
-(global-set-key (kbd "s-7") (lambda () (interactive) (jump-to-register ?7)))
-(global-set-key (kbd "s-8") (lambda () (interactive) (jump-to-register ?8)))
-(global-set-key (kbd "s-9") (lambda () (interactive) (jump-to-register ?9)))
-(global-set-key (kbd "s-0") (lambda () (interactive) (jump-to-register ?0)))
+(global-set-key (kbd "s-r") 'my-window-configuration-to-register)
+(global-set-key (kbd "s-1") (lambda () (interactive) (my-jump-to-register ?1)))
+(global-set-key (kbd "s-2") (lambda () (interactive) (my-jump-to-register ?2)))
+(global-set-key (kbd "s-3") (lambda () (interactive) (my-jump-to-register ?3)))
+(global-set-key (kbd "s-4") (lambda () (interactive) (my-jump-to-register ?4)))
+(global-set-key (kbd "s-5") (lambda () (interactive) (my-jump-to-register ?5)))
+(global-set-key (kbd "s-6") (lambda () (interactive) (my-jump-to-register ?6)))
+(global-set-key (kbd "s-7") (lambda () (interactive) (my-jump-to-register ?7)))
+(global-set-key (kbd "s-8") (lambda () (interactive) (my-jump-to-register ?8)))
+(global-set-key (kbd "s-9") (lambda () (interactive) (my-jump-to-register ?9)))
+(global-set-key (kbd "s-0") (lambda () (interactive) (my-jump-to-register ?0)))
+
+(defvar my-current-window-register 0)
+(defun my-window-configuration-to-register (register &optional _arg)
+  ""
+  (interactive (list (register-read-with-preview
+		      "Window configuration to register: ")
+		     current-prefix-arg))
+  ;; current-window-configuration does not include the value
+  ;; of point in the current buffer, so record that separately.
+  (setq my-current-window-register register)
+  (set-register register (list (current-window-configuration) (point-marker))))
+(defun my-jump-to-register (i)
+  "Save the current window register and jump to the provided one."
+  (interactive)
+  (window-configuration-to-register my-current-window-register)
+  (setq my-current-window-register i)
+  (jump-to-register i))
 
 (global-set-key [remap paredit-kill] (bol-with-prefix paredit-kill))
 (global-set-key [remap org-kill-line] (bol-with-prefix org-kill-line))

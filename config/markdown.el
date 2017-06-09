@@ -23,5 +23,5 @@
 (define-key markdown-mode-map [f5] 'markdown-gist-refresh)
 (defun markdown-gist-refresh ()
   (interactive)
-  (when (not (string= "" (shell-command-to-string "git remote -v | grep ^origin | grep '(push)' | grep blah")))
-    (message "OK, go!")))
+  (save-buffer)
+  (shell-command-to-string "git add .; git commit -m emacs-refresh; git push"))

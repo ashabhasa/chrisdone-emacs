@@ -4,7 +4,7 @@
 (require 'haskell-mode)
 (require 'hindent)
 (require 'haskell-process)
-;(require 'haskell-simple-indent)
+                                        ;(require 'haskell-simple-indent)
 (require 'haskell-interactive-mode)
 (require 'haskell)
 (require 'intero)
@@ -560,3 +560,40 @@ to stylish-haskell."
     (compile (format "cd %s && sh build.sh" (intero-project-root)))))
 
 (haskell-fast-modules-load)
+
+(define-key purescript-mode-map [f5]
+  (lambda ()
+    (interactive)
+    (compile "cd .. && stack exec purify")))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Expression watching support for intero
+
+(defvar intero-watch-expression "parseFunction \"\\\\x -> if 5>=x then 0 else 1\"")
+(defun intero-watch-expression (string)
+  (interactive "sEnter an expression: ")
+  (setq intero-watch-expression string)
+  (flycheck-buffer))
+(defun intero-watch-expression-hook ()
+  (interactive)
+  (when intero-watch-expression
+    (run-with-idle-timer
+     0.0
+     nil
+     (lambda ()
+       (when (eq major-mode 'haskell-mode)
+         (let* ((result
+                 (replace-regexp-in-string "\n$" ""  (intero-fontify-expression
+                                                      (intero-blocking-call 'backend intero-watch-expression))))
+                (msg
+                 (format
+                  "> %s\n\n%s"
+                  (intero-fontify-expression intero-watch-expression)
+                  result)))
+           (unless (string-match "<interactive>:[0-9]+:[0-9]+: Not in scope: " result)
+             (with-current-buffer (get-buffer-create "*Intero-Watch*")
+               (erase-buffer)
+               (insert msg)
+               (goto-char (point-min))))))))))
+(remove-hook 'flycheck-after-syntax-check-hook 'intero-watch-expression-hook)
