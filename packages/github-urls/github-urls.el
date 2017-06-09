@@ -96,7 +96,7 @@
 
 (defun github-urls-branch ()
   "Get the current branch."
-  (let* ((cmd "git symbolic-ref HEAD")
+  (let* ((cmd "git rev-parse HEAD")
          (branch (github-urls-shell-line cmd)))
     (if (not branch)
         (error "Failed: %s" cmd)
