@@ -37,8 +37,8 @@
     flycheck
     json-reformat
     restclient
-    yaml-mode
     purescript-mode
+    yaml-mode
     websocket)
   "Packages whose location follows the
   packages/package-name/package-name.el format.")
@@ -88,6 +88,7 @@
 (require 'hindent)
 (require 'shm-case-split)
 (require 'shm-reformat)
+(require 'org-multiclock)
 (require 'company)
 (require 'w3m-haddock)
 (require 'magit-blame)
@@ -96,6 +97,9 @@
 (require 'haskell-interactive-mode)
 (require 'haskell)
 (require 'haskell-simple-indent)
+;(require 'dash)
+;(require 's)
+;(require 'psc-ide)
 
 
 ;; Emacs configurations
