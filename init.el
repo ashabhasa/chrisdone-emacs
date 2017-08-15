@@ -39,7 +39,8 @@
     restclient
     purescript-mode
     yaml-mode
-    websocket)
+    websocket
+    psc-ide)
   "Packages whose location follows the
   packages/package-name/package-name.el format.")
 
@@ -99,7 +100,6 @@
 (require 'haskell-simple-indent)
 ;(require 'dash)
 ;(require 's)
-;(require 'psc-ide)
 
 
 ;; Emacs configurations

@@ -128,14 +128,12 @@ the cursor position happened."
   (interactive)
   (if god-local-mode
       (call-interactively 'god-mode-self-insert)
-    (if (looking-back "import")
-        (call-interactively 'haskell-mode-contextual-space)
-      (progn
-        (let ((ident (haskell-ident-at-point)))
-          (when ident
-            (and interactive-haskell-mode
-                 (haskell-process-do-try-type ident))))
-        (call-interactively 'shm/space)))))
+    (progn
+      (let ((ident (haskell-ident-at-point)))
+        (when ident
+          (and interactive-haskell-mode
+               (haskell-process-do-try-type ident))))
+      (call-interactively 'shm/space))))
 
 (defun shm/insert-putstrln ()
   "Insert a putStrLn."
@@ -226,6 +224,9 @@ import Data.ByteString (ByteString)
         ("Data.Map" . "import qualified Data.Map.Strict as M
 import Data.Map.Strict (Map)
 ")
+        ("Data.StrMap" . "import Data.StrMap as StrMap
+import Data.StrMap (StrMap)
+")
         ("Data.Map.Strict" . "import qualified Data.Map.Strict as M
 import Data.Map.Strict (Map)
 ")
@@ -255,7 +256,14 @@ import Data.Vector (Vector)
 (add-hook 'haskell-mode-hook 'haskell-auto-insert-module-template)
 (add-hook 'w3m-display-hook 'w3m-haddock-display)
 
-(add-hook 'haskell-mode-hook 'intero-mode-blacklist)
+(remove-hook 'haskell-mode-hook 'intero-mode-blacklist)
+(add-hook 'haskell-mode-hook 'my-intero-mode)
+
+(defun my-intero-mode ()
+  (interactive)
+  (if (eq major-mode 'purescript-mode)
+      (call-interactively 'psc-ide-mode)
+    (call-interactively 'intero-mode-blacklist)))
 
 
 ;; Keybindings
@@ -292,6 +300,8 @@ import Data.Vector (Vector)
 
 (define-key css-mode-map [f12] 'haskell-process-cabal-build-and-restart)
 (define-key css-mode-map (kbd "C-`") 'haskell-interactive-bring)
+
+(define-key purescript-mode-map (kbd "C-`") 'flycheck-list-errors)
 
 (define-key haskell-mode-map (kbd "C-c i") 'hindent/reformat-decl)
 (define-key haskell-mode-map (kbd "C-c C-d") 'haskell-w3m-open-haddock)
@@ -333,6 +343,10 @@ import Data.Vector (Vector)
 
 ;; (define-key ide-backend-mode-map [f5] 'ide-backend-mode-load)
 ;; (setq ide-backend-mode-cmd "cabal")
+
+(defun haskell-insert-operator ()
+  (interactive)
+  (insert ()))
 
 (defun haskell-process-all-types ()
   "List all types in a grep-mode buffer."
@@ -492,31 +506,31 @@ import Data.Vector (Vector)
   "A list of modules.")
 
 (defun haskell-fast-modules-save ()
-  (interactive)
-  (with-current-buffer (find-file-noselect "~/.emacs.d/.haskell-modules.el")
-    (erase-buffer)
-    (insert (format "%S" haskell-fast-module-list))
-    (basic-save-buffer)
-    (bury-buffer)))
+  (interactive))
 
 (defun haskell-fast-modules-load ()
-  (interactive)
-  (with-current-buffer (find-file-noselect "~/.emacs.d/.haskell-modules.el")
-    (setq haskell-fast-module-list (read (buffer-string)))
-    (bury-buffer)))
+  (interactive))
+
+(defun haskell-modules-list ()
+  (let* ((stack-root (intero-project-root))
+         (modules
+          (split-string
+           (concat (shell-command-to-string (format "find %s -name '*.cabal' | for i in $(cat /dev/stdin/); do cabal-info --cabal-file $i exposed-modules; done" stack-root))
+                   (shell-command-to-string "cat ~/.haskell-modules.hs")
+                   )
+           "\n" t)))
+    modules))
 
 (defun haskell-fast-get-import (custom)
   (if custom
       (let* ((module (haskell-capitalize-module (read-from-minibuffer "Module: " ""))))
-        (unless (member module haskell-fast-module-list)
-          (add-to-list 'haskell-fast-module-list module)
-          (haskell-fast-modules-save))
+        (shell-command-to-string (format "echo %S >> ~/.haskell-modules.hs" module))
         module)
     (let ((module (haskell-capitalize-module
                    (haskell-complete-module-read
                     "Module: "
                     (append (mapcar #'car haskell-import-mapping)
-                            haskell-fast-module-list)))))
+                            (haskell-modules-list))))))
       (unless (member module haskell-fast-module-list)
         (add-to-list 'haskell-fast-module-list module)
         (haskell-fast-modules-save))
@@ -567,6 +581,7 @@ to stylish-haskell."
     (compile "cd .. && stack exec purify")))
 
 
+(add-hook 'purescript-mode 'psc-ide-mode)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Expression watching support for intero
 
@@ -603,3 +618,5 @@ to stylish-haskell."
 
 
 (define-key intero-mode-map (kbd "C-?") 'intero-uses-at)
+(global-set-key [home] (lambda () (interactive)))
+(global-set-key [prior] (lambda () (interactive)))

@@ -22,7 +22,9 @@
 (define-derived-mode purescript-mode
   haskell-mode "Purescript"
   "Major mode for purescript."
-  (setq case-fold-search nil))
+  (setq case-fold-search t))
+
+(add-to-list 'auto-mode-alist '("\\.purs\\'" . purescript-mode))
 
 (define-key purescript-mode-map [f5]
   (lambda ()
@@ -33,5 +35,8 @@
   (lambda ()
     (interactive)
     (compile "cd ../; sh build.sh")))
+
+(add-hook 'purescript-mode-hook 'flycheck-mode)
+(add-hook 'purescript-mode-hook 'company-mode)
 
 (provide 'purescript-mode)

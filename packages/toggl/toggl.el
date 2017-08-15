@@ -119,13 +119,14 @@ standard Emacs date-time, and DURATION is a number of seconds."
             :pid project-id
             :start (toggl-format-time start-date-time)
             :duration duration)))))
-    (let ((buffer
-           (url-retrieve-synchronously
-            "https://www.toggl.com/api/v8/time_entries"
-            t)))
-      (with-current-buffer buffer
-        (goto-char (point-min))
-        (looking-at "HTTP/1.1 200 OK")))))
+    (when (> duration 0)
+      (let ((buffer
+             (url-retrieve-synchronously
+              "https://www.toggl.com/api/v8/time_entries"
+              t)))
+        (with-current-buffer buffer
+          (goto-char (point-min))
+          (looking-at "HTTP/1.1 200 OK"))))))
 
 (defun toggl-format-time (start-date-time)
   (replace-regexp-in-string "\\(.+?\\)\\+\\([0-9][0-9]\\)\\([0-9][0-9]\\)" "\\1+\\2:\\3" (format-time-string "%Y-%m-%dT%H:%M:%S%z" start-date-time)))

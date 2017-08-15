@@ -365,6 +365,12 @@ prefix argument."
 
 ;; Global keybindings
 
+(global-set-key (kbd "C-p") 'avoid-this-key)
+(global-set-key (kbd "C-h") 'previous-line)
+(defun avoid-this-key ()
+  (interactive)
+  (error "Use `h'"))
+
 (global-set-key (kbd "s-r") 'my-window-configuration-to-register)
 (global-set-key (kbd "s-1") (lambda () (interactive) (my-jump-to-register ?1)))
 (global-set-key (kbd "s-2") (lambda () (interactive) (my-jump-to-register ?2)))
@@ -486,6 +492,8 @@ prefix argument."
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 
+(setq-default dired-listing-switches "-alh")
+(setq dired-listing-switches "-alh")
 (setq inhibit-startup-message t)
 (setq inhibit-startup-echo-area-message t)
 (setq kmacro-execute-before-append nil)
