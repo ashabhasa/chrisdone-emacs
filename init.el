@@ -32,6 +32,7 @@
     ats-mode
     org-focus
     multiple-cursors
+    toggl
     projects-mode
     resmacro
     flycheck
@@ -87,6 +88,7 @@
 
 (require 'shm)
 (require 'hindent)
+(require 'org-multiclock)
 (require 'shm-case-split)
 (require 'shm-reformat)
 (require 'org-multiclock)
