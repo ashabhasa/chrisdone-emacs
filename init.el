@@ -41,7 +41,7 @@
     purescript-mode
     yaml-mode
     websocket
-    psc-ide)
+    )
   "Packages whose location follows the
   packages/package-name/package-name.el format.")
 
@@ -88,7 +88,6 @@
 
 (require 'shm)
 (require 'hindent)
-(require 'org-mode)
 (require 'org-multiclock)
 (require 'shm-case-split)
 (require 'shm-reformat)
