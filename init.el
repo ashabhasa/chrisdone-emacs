@@ -88,6 +88,7 @@
 
 (require 'shm)
 (require 'hindent)
+(require 'org-mode)
 (require 'org-multiclock)
 (require 'shm-case-split)
 (require 'shm-reformat)
@@ -119,3 +120,5 @@
 (god-mode)
 (goto-last-point-mode)
 (turn-on-haskell-simple-indent)
+(org-agenda-list)
+(org-focus)
