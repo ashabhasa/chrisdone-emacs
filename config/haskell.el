@@ -564,6 +564,8 @@ to stylish-haskell."
 
 (define-key intero-mode-map [f12] 'intero-devel-reload)
 
+
+
 (setq hindent-style "johan-tibell")
 
 (define-key haskell-mode-map [f6] (lambda () (interactive) (compile "stack test")))
@@ -620,3 +622,7 @@ to stylish-haskell."
 (define-key intero-mode-map (kbd "C-?") 'intero-uses-at)
 (global-set-key [home] (lambda () (interactive)))
 (global-set-key [prior] (lambda () (interactive)))
+
+(define-key flycheck-mode-map (kbd "C-v C-n") 'flycheck-next-error)
+(define-key flycheck-mode-map (kbd "C-v C-h") 'flycheck-previous-error)
+(define-key flycheck-mode-map (kbd "C-v C-v") 'flycheck-buffer)
