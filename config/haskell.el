@@ -209,7 +209,15 @@ the cursor position happened."
       '(("Data.Text" . "import qualified Data.Text as T
 import Data.Text (Text)
 ")
+        ("Data.Text.Encoding" . "import qualified Data.Text.Encoding as T
+")
+        ("Data.Text.Lazy.Encoding" . "import qualified Data.Text.Lazy.Encoding as LT
+")
         ("Data.Text.Lazy" . "import qualified Data.Text.Lazy as LT
+")
+        ("Data.Text.IO" . "import qualified Data.Text.IO as T
+")
+        ("Data.Text.Lazy.IO" . "import qualified Data.Text.IO as LT
 ")
         ("Data.ByteString" . "import qualified Data.ByteString as S
 import Data.ByteString (ByteString)
@@ -224,13 +232,19 @@ import Data.ByteString (ByteString)
         ("Data.Map" . "import qualified Data.Map.Strict as M
 import Data.Map.Strict (Map)
 ")
+        ("Data.HashMap" . "import qualified Data.HashMap.Strict as HM
+import Data.HashMap.Strict (HashMap)
+")
+        ("Data.IntMap" . "import qualified Data.IntMap.Strict as IM
+import Data.IntMap.Strict (IntMap)
+")
         ("Data.StrMap" . "import Data.StrMap as StrMap
 import Data.StrMap (StrMap)
 ")
         ("Data.Map.Strict" . "import qualified Data.Map.Strict as M
 import Data.Map.Strict (Map)
 ")
-        ("Data.Set" . "import qualified Data.Set as S
+        ("Data.Set" . "import qualified Data.Set as Set
 import Data.Set (Set)
 ")
         ("Data.Vector" . "import qualified Data.Vector as V
@@ -238,6 +252,10 @@ import Data.Vector (Vector)
 ")
         ("Data.Vector.Storable" . "import qualified Data.Vector.Storable as SV
 import Data.Vector (Vector)
+")
+        ("Data.List.NonEmpty" . "import qualified Data.List.NonEmpty as NE
+import Data.List.NonEmpty (NonEmpty)
+import qualified Data.List.NonEmpty.TH as NE
 ")
         ("Data.Conduit.List" . "import qualified Data.Conduit.List as CL
 ")
@@ -304,7 +322,6 @@ import Data.Vector (Vector)
 (define-key purescript-mode-map (kbd "C-`") 'flycheck-list-errors)
 
 (define-key haskell-mode-map (kbd "C-c i") 'hindent/reformat-decl)
-(define-key haskell-mode-map (kbd "C-c C-d") 'haskell-w3m-open-haddock)
 (define-key haskell-mode-map [f8] 'haskell-navigate-imports)
 (define-key haskell-mode-map (kbd "C-c C-u") 'haskell-insert-undefined)
 (define-key haskell-mode-map (kbd "C-c C-a") 'haskell-insert-doc)
@@ -620,9 +637,41 @@ to stylish-haskell."
 
 
 (define-key intero-mode-map (kbd "C-?") 'intero-uses-at)
+(define-key intero-mode-map (kbd "M-/") 'intero-special-expand)
+
+(defun intero-special-expand ()
+  "Expand holes or do regular dabbrev"
+  (interactive)
+  (if (intero-grab-hole)
+      (call-interactively 'company-complete)
+    (call-interactively 'dabbrev-expand)))
+
+
 (global-set-key [home] (lambda () (interactive)))
 (global-set-key [prior] (lambda () (interactive)))
 
 (define-key flycheck-mode-map (kbd "C-v C-n") 'flycheck-next-error)
 (define-key flycheck-mode-map (kbd "C-v C-h") 'flycheck-previous-error)
 (define-key flycheck-mode-map (kbd "C-v C-v") 'flycheck-buffer)
+
+(defun haskell-trace-region (beg end)
+  (interactive "r")
+  (save-excursion
+    (goto-char end)
+    (insert "|])")
+    (goto-char beg)
+    (insert "$(tracing [|")))
+
+(setq flycheck-display-errors-function nil)
+
+(setq intero--flycheck-multiple-files-support t)
+(define-key intero-mode-map (kbd "C-c C-c")
+  (lambda (prefix)
+    (interactive "P")
+    (when (intero-buffer-p 'backend)
+      (let ((targets (buffer-local-value 'intero-targets (intero-buffer 'backend))))
+        (if prefix
+            (call-interactively 'compile)
+          (compile (concat "stack build " (mapconcat 'identity targets " "))))))))
+
+(define-key haskell-mode-map (kbd "C-c C-d") 'stack-doc)

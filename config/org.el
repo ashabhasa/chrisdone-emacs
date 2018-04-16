@@ -273,3 +273,6 @@ Allowed minutes: 0 15 30 60
                   (+ 0.75 (floor h))))
             (+ 0.5 (floor h)))
         (+ 0.25 (floor h))))))
+
+(define-key org-mode-map (kbd "C-c C-x C-i") 'org-multiclock-in)
+(define-key org-mode-map (kbd "C-c C-x C-o") 'org-multiclock-out)

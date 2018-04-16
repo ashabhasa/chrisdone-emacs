@@ -91,3 +91,9 @@
 [submodule "packages/psc-ide-emacs"]
 	path = packages/psc-ide-emacs
 	url = git@github.com:epost/psc-ide-emacs.git
+[submodule "packages/audit"]
+	path = packages/audit
+	url = git@github.com:chrisdone/audit.git
+[submodule "packages/stack-doc"]
+	path = packages/stack-doc
+	url = git@github.com:chrisdone/stack-doc.git

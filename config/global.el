@@ -141,11 +141,11 @@ prompted regexp with the prompted text."
        (message (concat "Saved as script: " buffer-file-name))))
 
 (defun find-alternate-file-with-sudo ()
-  "Re-open with sudo."
+  "Re-open current file with sudo."
   (interactive)
-  (let ((point (point)))
-    (find-alternate-file (concat "/sudo::" (buffer-file-name)))
-    (goto-char point)))
+  (set-visited-file-name (concat "/sudo::" (buffer-file-name)))
+  (when buffer-read-only
+    (read-only-mode 0)))
 
 (defun comment-dwim-line (&optional arg)
   "Do-what-I-mean commenting the current line."
@@ -344,7 +344,7 @@ prefix argument."
          (interactive "P")
          (let ((col (current-column)))
            (when p
-             (forward-line 0))
+             (goto-char (line-beginning-position)))
            (call-interactively ',function)
            (when p
              (forward-char col))))
@@ -367,6 +367,9 @@ prefix argument."
 
 (global-set-key (kbd "C-p") 'avoid-this-key)
 (global-set-key (kbd "C-h") 'previous-line)
+
+(global-set-key (kbd "C-,") 'quickjump)
+
 (defun avoid-this-key ()
   (interactive)
   (error "Use `h'"))
@@ -403,6 +406,20 @@ prefix argument."
 (global-set-key [remap paredit-kill] (bol-with-prefix paredit-kill))
 (global-set-key [remap org-kill-line] (bol-with-prefix org-kill-line))
 (global-set-key [remap kill-line] (bol-with-prefix kill-line))
+(global-set-key [remap shm/kill-line] (bol-with-prefix shm/kill-line))
+
+(global-set-key (kbd "s-d") 'delete-this-line)
+
+(defun delete-this-line ()
+  (interactive)
+  (let ((col (current-column)))
+    (delete-region (1- (line-beginning-position))
+                   (line-end-position))
+    (forward-line 1)
+    (goto-char (+ (line-beginning-position) col))))
+
+(global-set-key (kbd "C-x C-(") 'resmacro-start-macro)
+(global-set-key (kbd "C-x C-)") 'kmacro-end-or-call-macro)
 
 (global-set-key (kbd "M-u") 'upcase-word-and-backwards)
 
@@ -433,7 +450,6 @@ prefix argument."
 (global-set-key (kbd "M-a") 'backward-up-list)
 (global-set-key (kbd "M-a") 'up-list)
 (global-set-key (kbd "C-z") 'ido-switch-buffer)
-(global-set-key (kbd "C-,") 'ace-jump-char-mode)
 
 (global-set-key (kbd "<left>") 'windmove-left)
 (global-set-key (kbd "<right>") 'windmove-right)
@@ -475,6 +491,24 @@ prefix argument."
 (define-key js-mode-map (kbd "C-c C-l") 'javascript-console-log)
 (define-key sgml-mode-map (kbd "/") nil)
 (define-key c-mode-map (kbd "/") nil)
+
+(defun my-comint-send ()
+  "Less silly return key for comint-mode."
+  (interactive)
+  (if (comint-after-pmark-p)
+      (call-interactively 'comint-send-input)
+    (goto-char (point-max))))
+
+(defun my-comint-prev ()
+  "Less silly return key for comint-mode."
+  (interactive)
+  (if (comint-after-pmark-p)
+      (call-interactively 'comint-previous-input)
+    (progn (goto-char (point-max))
+           (call-interactively 'comint-previous-input))))
+
+(define-key comint-mode-map (kbd "RET") 'my-comint-send)
+(define-key comint-mode-map (kbd "M-p") 'my-comint-prev)
 
 (define-key messages-buffer-mode-map (kbd "C-c C-k") 'messages-erase-buffer)
 (defun messages-erase-buffer ()
@@ -530,6 +564,7 @@ prefix argument."
 (setq default-major-mode 'text-mode)
 (setq-default indent-tabs-mode nil)
 (setq-default cursor-type 'bar)
+(blink-cursor-mode -1)
 
 (setq gnus-button-url 'browse-url-generic)
 
@@ -556,15 +591,15 @@ prefix argument."
                                  (50 . zenburn-yellow)
                                  (51 . zenburn-green))))
 
- (setq org-todo-keywords
-       '((sequence
-          "TODO(t)"
-          "STARTED(s)"
-          "BLOCKED(w@/!)"
-          "|"
-          "DONE(d!)"
-          "CANCELED(c@)"
-          "DEFERRED(c@)")))
+(setq org-todo-keywords
+      '((sequence
+         "TODO(t)"
+         "STARTED(s)"
+         "BLOCKED(w@/!)"
+         "|"
+         "DONE(d!)"
+         "CANCELED(c@)"
+         "DEFERRED(c@)")))
 
 (setq org-priority-faces (quote ((49 . sunburn-red)
                                  (50 . sunburn-yellow)
@@ -672,5 +707,53 @@ prefix argument."
        ,result)))
 
 (setq flycheck-check-syntax-automatically '(save idle-change new-line mode-enabled))
+
+(remove-hook 'post-command-hook 'slowdown)
+(defun slowdown ()
+  (redisplay)
+  (sleep-for 0.25))
+
+(setq comint-input-ignoredups t)
+
+(defun increment-character ()
+  (interactive)
+  (save-excursion
+    (unless (looking-at "[a-zA-Z]")
+      (when (looking-back "[a-zA-Z]")
+        (forward-char -1)))
+    (let ((c (string-to-char (buffer-substring-no-properties (point) (+ 1 (point))))))
+      (delete-region (point) (+ 1 (point)))
+      (insert (char-to-string (+ 1 c))))))
+(global-set-key (kbd "C-x C-c") 'increment-character)
+
+(defun wget (url)
+  (interactive "sEnter URL: ")
+  (let ((filename (read-from-minibuffer "Filename: " (car (last (split-string url "/" t))))))
+    (url-copy-file url filename t)
+    (find-file filename)))
+
+(global-set-key (kbd "C-=") 'resmacro-start-macro)
+(global-set-key (kbd "C-!") 'kmacro-end-or-call-macro)
+
+(global-set-key (kbd "<down-mouse-1>") 'mouse-drag-region)
+(global-set-key (kbd "<mouse-1>") 'my-down-mouse)
+
+(defun my-down-mouse ()
+  (interactive)
+  (let ((overlay-buttons (overlays-in (point) (1+ (point))))
+        (called nil))
+    (mapc (lambda (o)
+            (when (overlay-get o 'button)
+              (when (overlay-get o 'action)
+                (funcall (overlay-get o 'action) o)
+                (setq called t))))
+          overlay-buttons)
+    (unless called
+      (let ((button (get-text-property (point) 'button)))
+        (when (get-text-property (point) 'action)
+          (funcall (get-text-property (point) 'action)
+                   (point)))))))
+
+(setq audit-file-pattern "^src/.*?\\.hs$")
 
 (provide 'global)

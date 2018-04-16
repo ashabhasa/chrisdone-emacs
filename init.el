@@ -16,7 +16,6 @@
     smex
     magit
     goto-last-change
-    ace-jump-mode
     markdown-mode
     dash
     elisp-slime-nav
@@ -41,6 +40,8 @@
     purescript-mode
     yaml-mode
     websocket
+    quickjump
+    slow-keys
     )
   "Packages whose location follows the
   packages/package-name/package-name.el format.")
