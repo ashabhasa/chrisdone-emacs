@@ -227,6 +227,10 @@ import Data.ByteString (ByteString)
 ")
         ("Data.ByteString.Lazy" . "import qualified Data.ByteString.Lazy as L
 ")
+        ("Data.ByteString.Lazy.Builder" . "import qualified Data.ByteString.Lazy.Builder as L
+")
+        ("Data.ByteString.Builder" . "import qualified Data.ByteString.Lazy.Builder as L
+")
         ("Data.ByteString.Lazy.Char8" . "import qualified Data.ByteString.Lazy.Char8 as L8
 ")
         ("Data.Map" . "import qualified Data.Map.Strict as M
@@ -254,8 +258,7 @@ import Data.Vector (Vector)
 import Data.Vector (Vector)
 ")
         ("Data.List.NonEmpty" . "import qualified Data.List.NonEmpty as NE
-import Data.List.NonEmpty (NonEmpty)
-import qualified Data.List.NonEmpty.TH as NE
+import Data.List.NonEmpty (NonEmpty(..))
 ")
         ("Data.Conduit.List" . "import qualified Data.Conduit.List as CL
 ")
