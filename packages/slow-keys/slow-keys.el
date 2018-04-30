@@ -37,7 +37,7 @@
     (when (and (> slow-keys-repeat 3)
                (not (slow-keys-typing-cmd this-command)))
       (slow-keys-slow-down
-       "Use repetition numbers or more high-level commands!"))
+       (format "Use repetition numbers or more high-level commands: %S" this-command)))
     (let ((now (float-time)))
       (cond
        ((and (slow-keys-typing-cmd this-command)
@@ -62,6 +62,7 @@
 
 (defun slow-keys-ignore-cmd (cmd)
   (or (eq cmd 'mwheel-scroll)
-      (eq cmd 'my-down-mouse)))
+      (eq cmd 'my-down-mouse)
+      (eq cmd 'isearch-repeat-forward)))
 
 (provide 'slow-keys)
