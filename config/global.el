@@ -756,4 +756,8 @@ prefix argument."
 
 (setq audit-file-pattern "^src/.*?\\.hs$")
 
+(defun changelog-new ()
+  (interactive)
+  (execute-kbd-macro [?g ?< return return ?  ?e ?g ?w ?h ?h ?y ?g ?b ?  ?g ?f ?c ?+ ?1 return ?e return escape ?* ?\S-  escape]))
+
 (provide 'global)
