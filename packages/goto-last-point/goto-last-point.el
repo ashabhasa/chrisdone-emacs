@@ -23,10 +23,10 @@
   :group 'goto-last-point
   :type 'integer)
 
-(defvar goto-last-point-next nil
+(defvar-local goto-last-point-next nil
   "Next point to be added to the stack.")
 
-(defvar goto-last-point-stack nil
+(defvar-local goto-last-point-stack nil
   "The point undo stack.")
 
 (defvar goto-last-point-goto-hook nil
@@ -44,7 +44,7 @@
     (when (not (ring-empty-p goto-last-point-stack))
       (let ((point (ring-remove goto-last-point-stack 0)))
         (setq goto-last-point-next nil)
-        (goto-char point)
+        (when point (goto-char point))
         (run-hooks 'goto-last-point-goto-hook)))))
 
 (defun goto-last-point-add-hooks ()
