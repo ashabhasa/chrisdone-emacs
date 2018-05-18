@@ -97,3 +97,6 @@
 [submodule "packages/stack-doc"]
 	path = packages/stack-doc
 	url = git@github.com:chrisdone/stack-doc.git
+[submodule "packages/nginx-mode"]
+	path = packages/nginx-mode
+	url = git@github.com:ajc/nginx-mode.git
