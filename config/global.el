@@ -760,4 +760,7 @@ prefix argument."
   (interactive)
   (execute-kbd-macro [?g ?< return return ?  ?e ?g ?w ?h ?h ?y ?g ?b ?  ?g ?f ?c ?+ ?1 return ?e return escape ?* ?\S-  escape]))
 
+(define-key audit-mode-map (kbd "C-' C-'") 'audit-comment)
+(define-key audit-mode-map (kbd "C-' C-;") 'audit-ok)
+
 (provide 'global)

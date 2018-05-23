@@ -12,6 +12,7 @@
     sunburn
     god-mode
     paredit
+    audit
     haskell-mode
     smex
     magit
@@ -42,6 +43,7 @@
     websocket
     quickjump
     slow-keys
+    stack-doc
     )
   "Packages whose location follows the
   packages/package-name/package-name.el format.")
