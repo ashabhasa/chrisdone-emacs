@@ -100,3 +100,9 @@
 [submodule "packages/nginx-mode"]
 	path = packages/nginx-mode
 	url = git@github.com:ajc/nginx-mode.git
+[submodule "packages/docker"]
+	path = packages/docker
+	url = https://github.com/Silex/docker.el.git
+[submodule "packages/tablist"]
+	path = packages/tablist
+	url = https://github.com/politza/tablist.git

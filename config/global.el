@@ -732,6 +732,10 @@ prefix argument."
     (url-copy-file url filename t)
     (find-file filename)))
 
+(defun curl (url)
+  (interactive "sEnter URL: ")
+  (url-insert-file-contents url nil nil nil t))
+
 (global-set-key (kbd "C-=") 'resmacro-start-macro)
 (global-set-key (kbd "C-!") 'kmacro-end-or-call-macro)
 
