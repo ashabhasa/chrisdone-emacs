@@ -26,6 +26,8 @@
 
 (defvar slow-keys-repeat 0)
 (defvar slow-keys-last-press 0)
+(defvar slow-keys-sleep-for 0.5)
+(defvar slow-keys-min-delay 0.3)
 
 (defun slow-keys-do ()
   (unless (or executing-kbd-macro
@@ -46,14 +48,14 @@
         (slow-keys-slow-down "Slow down typing!"))
        ((and (not (slow-keys-typing-cmd this-command))
              (not (slow-keys-typing-cmd last-command))
-             (< (- now slow-keys-last-press) 0.3))
+             (< (- now slow-keys-last-press) slow-keys-min-delay))
         (slow-keys-slow-down "Slow down command running!")))
       (setq slow-keys-last-press now))))
 
 (defun slow-keys-slow-down (msg)
   (message "%s" (propertize msg 'face 'compilation-error))
   (redisplay)
-  (sleep-for 1))
+  (sleep-for slow-keys-sleep-for))
 
 (defun slow-keys-typing-cmd (cmd)
   (or (eq cmd 'self-insert-command)
